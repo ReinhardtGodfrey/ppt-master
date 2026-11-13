@@ -2,9 +2,9 @@
 
 Conditional design guidance for a deck whose first page is an archive-style overview hub: one-event content pages open from preview cards on the hub, and the presenter returns to the hub between parts. It reproduces the composition and reading logic of the original PowerPoint 缩放定位 (Slide Zoom) workflow inside this pipeline's editable-SVG → native-PPTX output.
 
-**Trigger**: load only when the user explicitly requests this pattern — the literal phrases 「用缩放总览美化」「做成缩放总览」「用缩放总览来排」, or equivalent English intent such as "overview slide zoom", "zoom overview", or "an archive overview page that opens each story". Never activate it by default: ordinary generate and beautify keep their current behavior, and a deck that merely has many photos, a cover, or a contents page does not qualify. A trigger without the user-supplied overview background and decoration assets does not activate it either — ask for them once (§1).
+**Trigger**: load only when the user explicitly requests this pattern — the literal phrases 「用缩放总览美化」「做成缩放总览」「用缩放总览来排」, or equivalent English intent such as "overview slide zoom", "zoom overview", or "an archive overview page that opens each story". Never activate it by default: ordinary generate and beautify keep their current behavior, and a deck that merely has many photos, a cover, or a contents page does not qualify. An explicit request also overrides a fidelity page-count invariant: inside Beautify or another fixed-page-count request the pattern still applies, and the hub page plus one-event pages may change the page count — state that change to the user before authoring (§2). A trigger without the user-supplied overview background and decoration assets does not activate it either — ask for them once (§1).
 
-**Ownership**: a conditional Generate design reference, not a fifth route or profile. Default keeps Strategist, its two blocking confirmations, and the plan → lock → execute gates; Quick keeps its one-pass flow. Roster and §IX content stay Plan-only, navigation targets stay §IX `Hyperlinks` content, geometry stays Executor-only; this reference supplies craft and boundary, never a parallel procedure. Under Beautify or any fixed-page-count profile, do not apply it: changing page count breaks that profile's invariants.
+**Ownership**: a conditional Generate design reference, not a fifth route or profile. Default keeps Strategist, its two blocking confirmations, and the plan → lock → execute gates; Quick keeps its one-pass flow. Roster and §IX content stay Plan-only, navigation targets stay §IX `Hyperlinks` content, geometry stays Executor-only; this reference supplies craft and boundary, never a parallel procedure. When the user explicitly asks for it inside Beautify or another fixed-page-count request, apply it anyway: the explicit request overrides only the page-count/re-pagination invariant, not wording fidelity or the profile's other constraints, and the changed page count is stated to the user (§2). Without the explicit request, default Beautify keeps the original page count.
 
 **Read it twice**: in planning before the three Stage-2 solutions and page roster (Default) or in the Quick planning pass, and again in the Executor read batch before P01.
 
@@ -48,6 +48,8 @@ python3 ${SKILL_DIR}/scripts/image_treat.py <project_path> images/<background> \
 - Each content page: `Hyperlinks` lists its return target, `#slide-01`.
 
 The final checker compares each page's anchors with its `Hyperlinks` line as a set, so the hub line must name every card and nothing else. Do not add new Design Spec field names for this pattern.
+
+**Page-count policy — explicit request beats a fixed page count.** When the request starts as Beautify (or any run whose profile fixes the page split), an explicit 「缩放总览」 request still activates this pattern: add P01 as a new page and re-cut the content into one-event pages, which may split a crowded source page or merge fragments of the same event. Keep all wording verbatim (Beautify's fidelity constraint stays), update §I `Page Count` and the §IX roster to the new count, and state the old → new page count to the user in the confirmation or plan message before any SVG is authored. Do not silently keep the source page split and then claim the pattern; do not slide the hub into the existing page count by dropping a source event. Without the explicit request, default Beautify keeps the original page count unchanged.
 
 ---
 
@@ -159,7 +161,7 @@ Choose the first mode the material supports and say which one was used:
 1. **Full authored pattern** — user background and decorations present: hub + preview cards + hyperlink jumps, with the manual Slide Zoom upgrade offered separately (§7).
 2. **Plain hub** — background supplied, decorations not: a clean full-bleed hub with typed cards on the theme surface; no fabricated textures, no fake envelope.
 3. **Contents-page navigation** — no hub visual assets at all: an ordinary contents page whose rows carry the same jumps (see [`native-hyperlinks.md`](./native-hyperlinks.md)); explicitly not the 缩放总览 look.
-4. **Decline the pattern** — fidelity profiles (Beautify, 1:1 wording, fixed page count) or a user who wants only the original manual workflow: keep the existing deck, explain that this pattern adds slides, and offer the manual route.
+4. **Original manual workflow** — the user wants only the original PowerPoint 缩放定位 workflow, or declines the hub assets: keep the deck as delivered (or as an ordinary Beautify result, preserving its page count) and offer the manual route (§7.1). A fidelity or fixed-page-count request is not a decline reason by itself; an explicit 「缩放总览」 request keeps the pattern and applies the §2 page-count policy.
 
 Never degrade into a fake: one slide containing all pages as pictures, a static collage whose cards only look clickable, or a claimed zoom interaction that the file does not have.
 
@@ -174,6 +176,7 @@ In Quick, this reference loads in the planning pass (it replaces nothing) and ag
 ## 10. Acceptance Checklist
 
 - [ ] Hub is page 01, content pages each cover one event, roster matches §I/§IX (or the Quick transient roster).
+- [ ] When the request began as Beautify or another fixed-page-count run, the old → new page count was stated to the user before authoring, and wording stayed verbatim.
 - [ ] Hub background derivative is full-bleed, blurred and dimmed; no white page edge.
 - [ ] User-supplied decorations only; no invented textures or envelopes.
 - [ ] Photos and cards share one white-border width; cards are rotated, staggered, shadowed, and legible.
@@ -186,4 +189,4 @@ In Quick, this reference loads in the planning pass (it replaces nothing) and ag
 ## 11. Boundaries and Owners
 
 - This reference owns the hub composition, card craft, navigation contract, and capability boundary. It does not own roster-contract confirmation (Strategist), anchor grammar (native-hyperlinks.md), image treatment (image-base.md), shadow values (executor-base.md), transitions (animations.md), or export commands (generate-pptx.md Step 7).
-- Do not add a lock field, a schema field, a confirmation question, or a route/profile for this pattern. A user who asks for it in a fidelity or fixed-page-count context gets the §8 decline, not a changed deck.
+- Do not add a lock field, a schema field, a confirmation question, or a route/profile for this pattern. A user who asks for it in a fidelity or fixed-page-count context still gets the pattern under the §2 page-count policy, with the new count stated before authoring — not a silent, unchanged deck; only an asset refusal, a manual-only preference, or missing event material changes the outcome.

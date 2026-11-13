@@ -52,7 +52,7 @@
     "skills/ppt-master/references/semantic-svg.md": 1500,
     "skills/ppt-master/references/native-hyperlinks.md": 1250,
     "skills/ppt-master/references/canvas-formats.md": 1250,
-    "skills/ppt-master/workflows/routing.md": 3250,
+    "skills/ppt-master/workflows/routing.md": 3500,
     "skills/ppt-master/references/artifact-ownership.md": 4500,
     "skills/ppt-master/workflows/governance/failure-recovery.md": 2750,
     "skills/ppt-master/workflows/stages/resume-execute.md": 1750,
@@ -64,7 +64,7 @@
     "skills/ppt-master/references/visual-review.md": 3500,
     "skills/ppt-master/workflows/stages/visual-review.md": 1750,
     "skills/ppt-master/workflows/stages/generate-audio.md": 4000,
-    "skills/ppt-master/workflows/profiles/beautify-pptx.md": 5000,
+    "skills/ppt-master/workflows/profiles/beautify-pptx.md": 5250,
     "skills/ppt-master/workflows/profiles/image-to-pptx.md": 4250,
     "skills/ppt-master/workflows/edit-native-pptx.md": 4500,
     "skills/ppt-master/workflows/create-template.md": 10000,
@@ -92,7 +92,7 @@
         "skills/ppt-master/SKILL.md",
         "skills/ppt-master/workflows/routing.md"
       ],
-      "max_tokens": 8500
+      "max_tokens": 8750
     },
     "support.sponsor-recommendation.en": {
       "description": "English sponsor context for explicit user requests for model, AI image model, API/provider, or hosted-service recommendations.",
@@ -2208,7 +2208,7 @@
             {
               "path": "skills/ppt-master/workflows/profiles/beautify-pptx.md",
               "role": "producer",
-              "fingerprint": "e1bd978fcc83",
+              "fingerprint": "b673537a977c",
               "reason": "This producer projects the owner field into the planning contract."
             }
           ]

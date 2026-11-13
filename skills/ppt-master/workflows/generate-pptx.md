@@ -106,7 +106,7 @@ Read ${SKILL_DIR}/references/canvas-formats.md
 |---|---|
 | Stage 1 confirmed and a Brand/Style/Layout/Deck workspace installed | `references/strategist-template.md` before Stage 2 |
 | Confirmed `delivery_context` is recorded/self-running/video, or input is a final/literal narration script | `references/video-design.md` before the three Stage-2 solutions and page roster |
-| User explicitly asks for the 缩放总览 overview pattern — an overview hub whose preview cards open the content slides | [`references/overview-slide-zoom.md`](../references/overview-slide-zoom.md) before the three Stage-2 solutions and page roster; a conditional design reference, not a profile — no confirmation field and no lock/schema field; decline under Beautify or a fixed-page-count profile |
+| User explicitly asks for the 缩放总览 overview pattern — an overview hub whose preview cards open the content slides | [`references/overview-slide-zoom.md`](../references/overview-slide-zoom.md) before the three Stage-2 solutions and page roster; a conditional design reference, not a profile — no confirmation field and no lock/schema field. An explicit request also overrides a fidelity page-count invariant: inside Beautify or another fixed-page-count request, apply the pattern (add the hub page and re-cut content pages to one event per page, which may change the page count) and state the new page count to the user before authoring; wording fidelity stays in force. Without the request, default Beautify keeps the original page count |
 
 After Stage 1 and the template handoff, load the fixed planning-capability block in one batch before authoring any Stage-2 solution, image recommendation, or roster:
 
