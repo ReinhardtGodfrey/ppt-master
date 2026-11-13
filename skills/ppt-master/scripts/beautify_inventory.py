@@ -13,7 +13,7 @@ Usage:
     python3 scripts/beautify_inventory.py <slide_library.json> [--images <image_manifest.json>] [-o inventory.json]
     python3 scripts/beautify_inventory.py <inventory.json> --summary
     python3 scripts/beautify_inventory.py <inventory.json> --page N [--with-geometry]
-    python3 scripts/beautify_inventory.py <inventory.json> --verify <exported.pptx>
+    python3 scripts/beautify_inventory.py <inventory.json> --verify <exported.pptx> [--allow-repagination]
 
 Examples:
     python3 scripts/beautify_inventory.py projects/x/analysis/<stem>.slide_library.json \
@@ -271,11 +271,60 @@ def _exported_text_by_slide(pptx_path: Path) -> dict[int, str]:
     return by_slide
 
 
-def verify_against_export(inventory: dict, pptx_path: Path) -> tuple[list[dict], bool]:
-    """Per-slide containment of every frozen source string in the exported deck."""
+def verify_against_export(
+    inventory: dict,
+    pptx_path: Path,
+    allow_repagination: bool = False,
+) -> tuple[list[dict], bool]:
+    """Containment of every frozen source string in the exported deck.
+
+    Strict mode (default) checks each source slide's strings on the same slide
+    index and fails on extra pages. With ``allow_repagination`` — an explicit
+    overview slide-zoom request re-cut the deck, adding a hub page and moving
+    content between pages — every frozen string must still appear somewhere in
+    the deck, but not necessarily on its source page; authored pages and the
+    hub/card text that carry no frozen string are reported, not failed.
+    """
     exported = _exported_text_by_slide(pptx_path)
     rows: list[dict] = []
     clean = True
+
+    if allow_repagination:
+        placed_anywhere: set[int] = set()
+        source_parts: list[str] = []
+        for slide in inventory.get("slides", []):
+            idx = int(slide.get("slide_index"))
+            frozen = _frozen_strings(slide)
+            source_parts.extend(frozen)
+            missing: list[str] = []
+            placed_pages: set[int] = set()
+            for text in frozen:
+                needle = _compact(text)
+                pages = [page for page, page_text in exported.items() if needle in page_text]
+                if pages:
+                    placed_pages.update(pages)
+                else:
+                    missing.append(text)
+            rows.append({
+                "slide_index": idx,
+                "frozen": len(frozen),
+                "missing": missing,
+                "placed_pages": sorted(placed_pages),
+            })
+            placed_anywhere.update(placed_pages)
+            if missing:
+                clean = False
+        authored_pages = sorted(set(exported) - placed_anywhere)
+        source_chars = Counter(_compact("".join(source_parts)))
+        deck_chars = Counter(_compact("".join(exported.values())))
+        added = deck_chars - source_chars
+        rows.append({
+            "slide_index": None,
+            "authored_pages": authored_pages,
+            "added_chars": sum(added.values()),
+        })
+        return rows, clean
+
     for slide in inventory.get("slides", []):
         idx = int(slide.get("slide_index"))
         page_text = exported.get(idx)
@@ -303,11 +352,30 @@ def verify_against_export(inventory: dict, pptx_path: Path) -> tuple[list[dict],
     return rows, clean
 
 
-def _print_verify(rows: list[dict], clean: bool, pptx_path: Path) -> None:
+def _print_verify(
+    rows: list[dict],
+    clean: bool,
+    pptx_path: Path,
+    allow_repagination: bool = False,
+) -> None:
     print(f"[VERIFY] frozen source strings vs {pptx_path.name}")
+    if allow_repagination:
+        print("  mode: repagination allowed — strings may move pages; authored pages and hub/card text are expected")
     for row in rows:
         if row.get("slide_index") is None:
-            print(f"  extra exported page(s) with no source slide: {row['extra_exported_pages']}")
+            if allow_repagination:
+                authored = row.get("authored_pages") or []
+                extra = f"authored page(s) with no frozen string: {authored}" if authored else "no authored pages"
+                print(f"  {extra}; +{row['added_chars']} char(s) beyond source (hub/card text is expected)")
+            else:
+                print(f"  extra exported page(s) with no source slide: {row['extra_exported_pages']}")
+            continue
+        if allow_repagination:
+            status = "ok" if not row["missing"] else f"MISSING {len(row['missing'])}"
+            pages = ", ".join(str(page) for page in row["placed_pages"]) or "none"
+            print(f"  slide {row['slide_index']:02d}: {row['frozen']} frozen, {status}; placed on page(s) {pages}")
+            for text in row["missing"][:5]:
+                print(f"      - {text[:80]}")
             continue
         if not row.get("exported_page", True):
             print(f"  slide {row['slide_index']:02d}: no exported page; {row['frozen']} frozen string(s) unplaced")
@@ -318,7 +386,17 @@ def _print_verify(rows: list[dict], clean: bool, pptx_path: Path) -> None:
         print(f"  slide {row['slide_index']:02d}: {row['frozen']} frozen, {status}{note}")
         for text in row["missing"][:5]:
             print(f"      - {text[:80]}")
-    print(f"[VERIFY] {'passed: every frozen string is present on its page' if clean else 'FAILED: frozen strings are missing or pages do not match'}")
+    if allow_repagination:
+        message = (
+            "passed: every frozen string is present in the export (re-paginated pages allowed)"
+            if clean else "FAILED: frozen strings are missing from the export"
+        )
+    else:
+        message = (
+            "passed: every frozen string is present on its page"
+            if clean else "FAILED: frozen strings are missing or pages do not match"
+        )
+    print(f"[VERIFY] {message}")
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -360,6 +438,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="Check that every frozen source string is present on its page of an exported deck; exit 1 when any is missing",
     )
     parser.add_argument(
+        "--allow-repagination",
+        action="store_true",
+        help=(
+            "With --verify: require every frozen string somewhere in the deck and allow "
+            "page numbers to move (explicit 缩放总览 re-cut: hub page + one-event pages)"
+        ),
+    )
+    parser.add_argument(
         "--with-geometry",
         action="store_true",
         help="Retain source-layout geometry in a --page view",
@@ -376,6 +462,8 @@ def main(argv: Optional[list[str]] = None) -> int:
         parser.error("--summary/--page write to stdout and cannot be combined with --output")
     if args.with_geometry and args.page is None:
         parser.error("--with-geometry requires --page")
+    if args.allow_repagination and args.verify is None:
+        parser.error("--allow-repagination requires --verify")
 
     input_path = Path(args.input_json)
     if not input_path.is_file():
@@ -418,8 +506,12 @@ def main(argv: Optional[list[str]] = None) -> int:
         if not pptx_path.is_file():
             print(f"[ERROR] exported deck not found: {pptx_path}", file=sys.stderr)
             return 1
-        rows, clean = verify_against_export(inventory, pptx_path)
-        _print_verify(rows, clean, pptx_path)
+        rows, clean = verify_against_export(
+            inventory,
+            pptx_path,
+            allow_repagination=args.allow_repagination,
+        )
+        _print_verify(rows, clean, pptx_path, allow_repagination=args.allow_repagination)
         return 0 if clean else 1
 
     if args.summary:
