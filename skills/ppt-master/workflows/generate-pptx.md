@@ -106,6 +106,7 @@ Read ${SKILL_DIR}/references/canvas-formats.md
 |---|---|
 | Stage 1 confirmed and a Brand/Style/Layout/Deck workspace installed | `references/strategist-template.md` before Stage 2 |
 | Confirmed `delivery_context` is recorded/self-running/video, or input is a final/literal narration script | `references/video-design.md` before the three Stage-2 solutions and page roster |
+| User explicitly asks for the 缩放总览 overview pattern — an overview hub whose preview cards open the content slides | [`references/overview-slide-zoom.md`](../references/overview-slide-zoom.md) before the three Stage-2 solutions and page roster; a conditional design reference, not a profile — no confirmation field and no lock/schema field; decline under Beautify or a fixed-page-count profile |
 
 After Stage 1 and the template handoff, load the fixed planning-capability block in one batch before authoring any Stage-2 solution, image recommendation, or roster:
 
@@ -170,7 +171,7 @@ If the user selects chat after launch, apply `confirm-surface.md`'s in-run switc
 
 **Production fields**: resolve Speaker Notes, Custom Animations, and Narration Audio as latest explicit user instruction → final Stage-2 proactive value → default `true` / `false` / `false`. Enabled Narration Audio raises a non-explicitly-disabled Speaker Notes outcome and names that dependency. Persist the effective outcomes with provenance as the three rows in `design_spec.md §I`, keep the raw proactive fields as evidence only, and project neither into `spec_lock.md`. A later explicit request updates only its §I outcome and resumes the owning step without reopening Confirm UI. Disabling notes while audio stays enabled asks one question (disable audio too, or keep its required notes) before writing either row.
 
-**Formulas and hyperlinks** are §IX content, not confirmation fields or resources: Strategist records the delimiter-free LaTeX body or the exact URI / 1-based slide target, and Executor chooses the realization (text, inline, or block math; inline or whole-object link carrier) under [`native-formula.md`](../references/native-formula.md) / [`native-hyperlinks.md`](../references/native-hyperlinks.md). No manifest or lock entry exists for either.
+**Formulas and hyperlinks** are §IX content, not confirmation fields or resources: Strategist records the delimiter-free LaTeX body or the exact URI / 1-based slide target, and Executor chooses the realization (text, inline, or block math; inline or whole-object link carrier) under [`native-formula.md`](../references/native-formula.md) / [`native-hyperlinks.md`](../references/native-hyperlinks.md). No manifest or lock entry exists for either. An overview hub records every preview-card target on its single `Hyperlinks` line (for example `#slide-02, #slide-03`); the final checker compares planned and authored targets as sets, not wording.
 
 **Prepared final narration**: when an explicit final/literal script will become notes or audio, follow `video-design.md` §1 and §3 — segment it by scene in Stage 2, give each segment a supporting visible state in §IX, record source and verbatim policy in §X, and after Gate 2 (before Step 5 or the split handoff) write the exact segments once to `notes/total.md`, split only in Step 7.1.
 
@@ -229,10 +230,11 @@ Read ${SKILL_DIR}/references/preset-shape-vocabulary.md    # REQUIRED core: comp
 Read ${SKILL_DIR}/references/modes/<resolved-id>.md        # one preset id, or each `mode_references` id
 Read ${SKILL_DIR}/references/visual-styles/<resolved-id>.md # one preset id, or each `visual_style_references` id
 # Triggered modules — evaluate executor-base.md's routing table over the §IX roster before P01
-# and read every triggered module in this same batch.
+# and read every triggered module in this same batch. An overview hub also reads
+# references/overview-slide-zoom.md here, before the first SVG.
 ```
 
-Read the core as one batch with the exact detail files named by the retained `spec_lock.md`, then every module the roster sweep triggers. Never reopen the planning indexes, infer adjacent bases, glob a catalog, or blend unselected identities (an unreferenced custom follows its behavior alone). Conditional modules load on [`executor-base.md`](../references/executor-base.md)'s routing table, never by analogy; `video-design.md` is read before the first SVG when §I records recorded/self-running/video delivery or §X a literal script. Read each reference once per valid context.
+Read the core as one batch with the exact detail files named by the retained `spec_lock.md`, then every module the roster sweep triggers. Never reopen the planning indexes, infer adjacent bases, glob a catalog, or blend unselected identities (an unreferenced custom follows its behavior alone). Conditional modules load on [`executor-base.md`](../references/executor-base.md)'s routing table, never by analogy; `video-design.md` is read before the first SVG when §I records recorded/self-running/video delivery or §X a literal script; `overview-slide-zoom.md` is read in this batch when §IX plans the overview hub. Read each reference once per valid context.
 
 **Context validity**: reuse the retained Design Spec and lock for every page while the context is unchanged and uncompacted; do not reread or poll them. On local uncertainty consult the retained lock, then only the owning Design Spec fragment — sources supply facts only, and the Design Spec wins a conflict.
 
@@ -362,6 +364,8 @@ python3 ${SKILL_DIR}/scripts/finalize_svg.py <project_path>
 Sound: the optional post-motion pass is [`animations.md`](../references/animations.md) §2.2. For a narrated MP4, [`generate-audio`](stages/generate-audio.md) owns the delivery choice.
 
 **Success criterion**: the command exits 0 and produces `exports/<project_name>_<timestamp>.pptx`, `validation/<project_name>_<timestamp>.report.json` with `passed` or `passed-with-warnings`, and `validation/<project_name>_<timestamp>.trace.json` when `--conversion-trace` was enabled. The exporter itself requires the current matching `final` quality report and exits nonzero on a missing, unreadable, unsupported, non-final, blocking, stale, or unverifiable one. Read the compact `[POSTFLIGHT]` receipt (`status`, `quality_gate`, slide count, warning counts, paths), disclose material warnings, and never `cat` the full report on success. Retain the report path for a later `deck_motion` handoff; postflight proves the package, not a later MP4 audio track.
+
+**Capability boundary — the overview hub is authored, not native zoom**: the exporter writes the hub cards' native hyperlink jumps and the content slides; it does not create PowerPoint Slide Zoom (`p:zoom`). Do not tell the user the deck already carries zoom navigation: native zoom, 「缩放定位背景」, thumbnail refresh, and 「返回到缩放定位」 require the manual PowerPoint upgrade path in [`overview-slide-zoom.md`](../references/overview-slide-zoom.md) §7.1 after export.
 
 ### Revision Round (delivered project)
 

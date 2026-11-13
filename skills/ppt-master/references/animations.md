@@ -188,7 +188,7 @@ Morph tweens matched objects across consecutive slides, so any continuous action
 
 **Give text somewhere to come from**: text present only on the second page can only fade in — place the next page's copy just below the canvas and the previous page's just above, so blocks slide through the frame. A wholly off-canvas endpoint is one direct-root `<g id>` with valid `data-pptx-bounds` and `data-pptx-morph-staging="true"`, explicitly paired when Morph stays enabled; the marker never excuses a partially clipped group. Declare identity through the destination's `morph` block, never `data-pptx-shape-name` (importer metadata, [`svg-effects.md`](./svg-effects.md) §6.6).
 
-**Not supported**: Slide Zoom / Summary Zoom (build click navigation with `trigger_shape` or hyperlinks) and 3D — perspective, extrusion, and shear fail closed ([`svg-effects.md`](./svg-effects.md) §6.8); build the impression with offset, scale, overlap, and per-facet lightness.
+**Not supported**: Slide Zoom / Summary Zoom (build click navigation with `trigger_shape` or hyperlinks) and 3D — perspective, extrusion, and shear fail closed ([`svg-effects.md`](./svg-effects.md) §6.8); build the impression with offset, scale, overlap, and per-facet lightness. For a requested 缩放总览 overview hub, the authored fallback — native hyperlink jumps over authored preview cards plus the manual PowerPoint upgrade path — lives in [`overview-slide-zoom.md`](./overview-slide-zoom.md).
 
 ---
 

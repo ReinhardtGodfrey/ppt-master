@@ -64,6 +64,8 @@ A book-length converted source is located by its heading index and searched phra
 
 **Video delivery**: when delivery is recorded, self-running, or video-directed — or a final/literal script will become notes/audio — read `video-design.md` now and retain it through roster, SVG, notes, and motion decisions.
 
+**Overview slide-zoom pattern**: when the user explicitly asks for the 缩放总览 overview hub, read `overview-slide-zoom.md` now and retain it through roster, SVG, and export. The asset gate still applies — the overview background and decoration files are user-supplied before P01. Quick has no `design_spec.md` §IX, so keep the complete preview-card → content-page target map in the active context and in the carrier receipt; the lockless checker still validates each SVG's native link targets and range, but planned-target equality can only be reviewed against that retained map.
+
 **Template branch** (resolve exactly one before initialization; Image to PPTX always takes free design and installs nothing):
 
 | Branch | Rule |
@@ -117,7 +119,7 @@ Read ${SKILL_DIR}/templates/tables/table-vocabulary.md
 - **Density**: a body-content frame and a density judgment per page (`anchor`, `dense`, `breathing`) rather than one uniform fill.
 - **Relationships**: for each page, its semantic units and their source-stated relationship (`order` / `link` / `parent` / `membership` / `contrast` / `overlap`, or none), entry, and outcome — the input to §3's topology decision; zones, geometry, and carriers are §3 authoring decisions.
 - **Shape language and motif**: the deck-level shape language under [`visual-styles/_index.md`](../../references/visual-styles/_index.md) §2, and, when it earns a continuity job, one transient motif system with an invariant and a reuse mode (fixed chrome, adaptive variation, or both). Restraint governs weight and recurrence, never the omission of an evidenced identity or communication motif.
-- **Resource decisions** for immediate preparation: manifests may carry filenames, page relationship, status, and generation/crop/focal cues (plus subject/quiet zones, boundary, seam, and share when composition depends on them); no general roster or icon-to-page assignment. Each formula's LaTeX and each hyperlink's exact target stay in context, with no manifest. An explicit user implementation path wins; otherwise the registered default.
+- **Resource decisions** for immediate preparation: manifests may carry filenames, page relationship, status, and generation/crop/focal cues (plus subject/quiet zones, boundary, seam, and share when composition depends on them); no general roster or icon-to-page assignment. Each formula's LaTeX and each hyperlink's exact target stay in context, with no manifest. An overview hub keeps its full card → content-page target map in context as well. An explicit user implementation path wins; otherwise the registered default.
 
 **Mandatory — whole-roster rhythm check, cover impact, closing impact**: [`plan-core.md`](../../references/plan-core.md) §4, applied to the transient roster in place; no artifact or second pass.
 
@@ -167,7 +169,7 @@ Read ${SKILL_DIR}/templates/tables/table-vocabulary.md
 
 ## 3. Direct SVG Authoring
 
-Read the execution core together, never file by file: [`shared-standards-core.md`](../../references/shared-standards-core.md), [`executor-base.md`](../../references/executor-base.md), [`semantic-svg.md`](../../references/semantic-svg.md), and [`preset-shape-vocabulary.md`](../../references/preset-shape-vocabulary.md) (complete, before P01). Then evaluate `executor-base.md`'s routing table once over the frozen roster and read every triggered module in the same batch (the `Any image` row loads its four files together); installed Layout/Deck structure adds [`pptx-structure-interface.md`](../../references/pptx-structure-interface.md). Keep the selected mode/style files: a custom applies one basis under its behavior, synthesizes several by their contributions, or follows the behavior alone. Reread anything only after a known file change or context invalidation.
+Read the execution core together, never file by file: [`shared-standards-core.md`](../../references/shared-standards-core.md), [`executor-base.md`](../../references/executor-base.md), [`semantic-svg.md`](../../references/semantic-svg.md), and [`preset-shape-vocabulary.md`](../../references/preset-shape-vocabulary.md) (complete, before P01). Then evaluate `executor-base.md`'s routing table once over the frozen roster and read every triggered module in the same batch (the `Any image` row loads its four files together); installed Layout/Deck structure adds [`pptx-structure-interface.md`](../../references/pptx-structure-interface.md). The 缩放总览 overview row adds [`overview-slide-zoom.md`](../../references/overview-slide-zoom.md), which authors the content pages before the hub while keeping numeric filenames in roster order. Keep the selected mode/style files: a custom applies one basis under its behavior, synthesizes several by their contributions, or follows the behavior alone. Reread anything only after a known file change or context invalidation.
 
 **How executor-base binds Quick**: exactly as it binds Default except its `Default only` items — the persisted-plan handoff in §2 / §2.1 and the export hand-off in §6 — which Quick's transient §2 anchors, own checker gates, and export below replace; the Default gate cadence in `generate-pptx.md` Step 6 does not apply. Conditional authorities load on its routing table (Chart/Table branches, native data, formula, hyperlink). Chart/Table reference and final information model are independent signals, and selection never makes an object native-ready. Explicit user/template requirements and the resolved style override compatible aesthetic defaults, never technical boundaries, carrier eligibility, or native capability discovery.
 
@@ -211,7 +213,7 @@ python3 ${SKILL_DIR}/scripts/svg_quality_checker.py <project_path> \
 
 `--json` writes `validation/svg_quality_report.json`, the report `--quick-generate` export fingerprints against `svg_output/`; stdout stays the human-readable summary and is never parsed as JSON. Both flags above are required — omitting `--canonical-authoring` or `--json` makes the export refuse or skip the canonical check.
 
-**Mandatory — final carrier-receipt review**: run the review in [`executor-base.md`](../../references/executor-base.md) §3 Checkpoints against the retained page jobs, deck shape language, motif, resource roles, and geometry signatures; a repair reruns this checker once.
+**Mandatory — final carrier-receipt review**: run the review in [`executor-base.md`](../../references/executor-base.md) §3 Checkpoints against the retained page jobs, deck shape language, motif, resource roles, and geometry signatures; a repair reruns this checker once. For an overview hub, also compare each authored preview-card anchor with the retained target map — the hub must link every planned card, and each content page's return control must reach the hub.
 
 **Notes** (when enabled): load [`executor-notes.md`](../../references/executor-notes.md) after the passing check, validate a frozen script or pre-SVG narration without regenerating it or otherwise generate `notes/total.md` from the final roster, then split:
 
@@ -229,6 +231,8 @@ python3 ${SKILL_DIR}/scripts/svg_to_pptx.py <project_path> --quick-generate --no
 ```
 
 **Exporter behavior**: `--quick-generate` reads `svg_output/`, resolves project-local assets, infers one canvas and one all-page structure mode (no metadata → flat; complete Master/Layout/slot metadata → structured), and needs no lock. Notes, Custom Animations, and narration stay off unless the agent enabled them or the video rule requires them; append `--native-charts-and-tables` for an explicit native Chart/Table delivery decision or any structured `chart` / `table` placeholder slot (the exporter refuses to compile a typed slot as a fallback). Never run `finalize_svg.py`. The exporter requires a passing `final` report whose fingerprint matches the current `svg_output/`; the default output path keeps backup and postflight, an explicit `-o <path>.pptx` skips backup.
+
+**Overview capability boundary**: an exported 缩放总览 deck carries ordinary slides plus native hyperlink jumps; PowerPoint Slide Zoom is not created. When delivering, state that native zoom, 「缩放定位背景」, and 「返回到缩放定位」 need the manual insertion path in [`overview-slide-zoom.md`](../../references/overview-slide-zoom.md) §7.1, and never tell the user the file already contains that playback interaction.
 
 **On failure**: repair the owning SVG, resource, or capability input, rerun the checker, and export again — never create a Design Spec or lock.
 

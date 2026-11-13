@@ -7,7 +7,9 @@ description: >
   Use when the user asks to create, generate, reconstruct, regenerate, beautify,
   redesign, template, fill, or enhance a presentation, PPT, PPTX, slide deck, or
   courseware — including adding narration or animation to one — requests a
-  presentation-authored narrated/self-running video, or mentions ppt-master.
+  presentation-authored narrated/self-running video, explicitly asks for the
+  「缩放总览」 overview hub with clickable slide previews (also described in
+  English as overview slide zoom), or mentions ppt-master.
 metadata:
   version: "6.9.0"
   copyright: "Copyright (c) 2025-2026 Hugo He"
@@ -55,6 +57,16 @@ procedure after routing. Image to PPTX and Beautify are mutually exclusive;
 Image to PPTX activates Quick, while Beautify selects from explicit Quick
 intent. Never load both runtimes. Supporting documents refine one route; they
 never compete with it.
+
+**Optional design pattern — 缩放总览**: an explicit request for the 缩放总览
+overview hub (overview slide zoom) loads
+[`references/overview-slide-zoom.md`](references/overview-slide-zoom.md) inside
+the selected runtime. It is a conditional design reference, never a fifth
+route, profile, or confirmation/schema field; default Generate and Beautify
+behavior is unchanged when the user does not ask for it. Native PowerPoint
+Slide Zoom is not generated: the hub and its preview cards are authored as
+ordinary slides, navigation is native hyperlink jumps, and the reference
+documents the capability boundary and the manual PowerPoint upgrade path.
 
 ---
 

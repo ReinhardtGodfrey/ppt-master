@@ -23,6 +23,8 @@
 | R15 | Animation delay defaults, stagger, and beat/click-group timing | `scripts/docs/pptx-animations.md` §8 | `references/animations.md` §2 (minimal authoring contract), `docs/animations.md`, `docs/zh/animations.md` (field pointers) |
 | R16 | Narration provider selection and audio-only execution; OpenAI protocol, credentials, timeouts, and transcript validation | Procedure: `workflows/stages/generate-audio.md` Steps 2–5; tool contract: `scripts/docs/narration.md` OpenAI Realtime narration | `docs/audio-narration.md`, `docs/zh/audio-narration.md`, `scripts/README.md`, `scripts/docs/svg-pipeline.md`, `scripts/docs/troubleshooting.md`, `.env.example` |
 
+| R17 | 缩放总览 overview slide-zoom is an optional design pattern: a conditional design reference loaded only on explicit user request; never a route/profile/confirmation field, and ordinary Generate/Beautify behavior is unchanged without the request | `workflows/routing.md` §3 | `references/overview-slide-zoom.md`, `SKILL.md`, `workflows/generate-pptx.md` Step 4/6/7.3, `workflows/profiles/quick-generate.md` §2/§3/§4, `references/executor-base.md` §1, `references/animations.md` §3 |
+
 ## 2. Planning-side rules (Default)
 
 | ID | Rule (one line) | Owner | Pointer only |

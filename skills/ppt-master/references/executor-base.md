@@ -17,6 +17,7 @@ Always-loaded Executor authority for flat SVG page authoring, shared by Default 
 | Any image | [`executor-image.md`](./executor-image.md) + [`image-layout-spec.md`](./image-layout-spec.md) + [`image-layout-patterns.md`](./image-layout-patterns.md) + [`svg-image-embedding.md`](./svg-image-embedding.md) |
 | Structural notation — a fraction, radical, n-ary operator, matrix, or delimiter pair (flat arithmetic, percentages, and `O(n log n)`-style tokens stay ordinary text) | [`native-formula.md`](./native-formula.md) |
 | Any external or same-deck click hyperlink | [`native-hyperlinks.md`](./native-hyperlinks.md) |
+| The roster plans the 缩放总览 overview pattern — a hub page whose preview cards carry same-deck jumps | [`overview-slide-zoom.md`](./overview-slide-zoom.md), read alongside [`native-hyperlinks.md`](./native-hyperlinks.md) |
 | Any placed image is `Status: Sourced` or its filename has an `image_sources.json` record | [`executor-web-image.md`](./executor-web-image.md), after `executor-image.md` |
 | Effective Speaker Notes outcome is enabled after all SVG pages pass | [`executor-notes.md`](./executor-notes.md) |
 
